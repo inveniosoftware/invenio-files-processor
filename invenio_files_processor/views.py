@@ -28,21 +28,39 @@
 # the templates and static folders as well as the test case.
 
 from __future__ import absolute_import, print_function
-
-from flask import Blueprint, render_template
-from flask_babelex import gettext as _
+from io import open
+from flask import Blueprint, request, jsonify
+from invenio_grobid.api import process_pdf_stream
+from invenio_grobid.mapping import tei_to_dict
+from invenio_grobid.errors import GrobidRequestError
+from invenio_db import db
+from invenio_files_rest.models import ObjectVersion, FileInstance
 
 blueprint = Blueprint(
     'invenio_files_processor',
     __name__,
+    url_prefix='/fileprocessor',
     template_folder='templates',
     static_folder='static',
 )
 
 
-@blueprint.route("/")
-def index():
-    """Basic view."""
-    return render_template(
-        "invenio_files_processor/index.html",
-        module_name=_('Invenio-Files-Processor'))
+@blueprint.route("/pdf/<version_id>", methods=['POST'])
+def extract_pdf_metadata(version_id=None):
+    file_id = ObjectVersion.query.filter_by(version_id=version_id).one().file_id
+    file_instance = FileInstance.get(file_id)
+    with open(file_instance.uri,'rb') as pdf_file:
+        try:
+            xml = process_pdf_stream(pdf_file)
+        except GrobidRequestError:
+            abort(500)
+    r =  tei_to_dict(xml)
+    # showing the JSON for debugging
+    metadata = dict(
+        title =  r.get('title'),
+        description = r.get('abstract'),
+        keywords =  [ it['value']  for it in r['keywords']] if 'keywords' in r else None,
+        creators =  [ dict(name=it['name'], affiliation=it['affiliations'][0]['value'])
+        for it in r['authors'] ] if 'authors' in r else None
+    )
+    return jsonify(metadata)
