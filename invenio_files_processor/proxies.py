@@ -22,17 +22,12 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Invenio module that adds more fun to the platform."""
+"""Proxy for current processor"""
 
-# TODO: This is an example file. Remove it if your package does not use any
-# extra configuration variables.
+from __future__ import absolute_import, print_function
 
-FILES_PROCESSOR_DEFAULT_VALUE = 'foobar'
-"""Default value for the application."""
+from flask import current_app
+from werkzeug.local import LocalProxy
 
-FILES_PROCESSOR_BASE_TEMPLATE = 'invenio_files_processor/base.html'
-"""Default base template for the demo page."""
-
-FILES_PROCESSOR_PREFERENCES = [
-    'pdf_grobid'
-]
+current_processor = LocalProxy(
+    lambda: current_app.extensions['invenio-files-processor'])

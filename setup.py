@@ -92,6 +92,9 @@ setup(
         'invenio_i18n.translations': [
             'messages = invenio_files_processor',
         ],
+        'invenio_files_processor.processors': [
+            'pdf_grobid = invenio_files_processor.extensions.pdf_grobid'
+        ]
         # TODO: Edit these entry points to fit your needs.
         # 'invenio_access.actions': [],
         # 'invenio_admin.actions': [],

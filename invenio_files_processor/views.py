@@ -29,12 +29,10 @@
 
 from __future__ import absolute_import, print_function
 from io import open
-from flask import Blueprint, request, jsonify
-from invenio_grobid.api import process_pdf_stream
-from invenio_grobid.mapping import tei_to_dict
-from invenio_grobid.errors import GrobidRequestError
+from flask import Blueprint, request, jsonify, current_app
 from invenio_db import db
 from invenio_files_rest.models import ObjectVersion, FileInstance
+from .proxies import current_processor
 
 blueprint = Blueprint(
     'invenio_files_processor',
@@ -44,23 +42,21 @@ blueprint = Blueprint(
     static_folder='static',
 )
 
-
-@blueprint.route("/pdf/<version_id>", methods=['POST'])
-def extract_pdf_metadata(version_id=None):
+@blueprint.route("/<filetype>/<version_id>", methods=['POST'])
+def extract_pdf_metadata(filetype=None, version_id=None):
     file_id = ObjectVersion.query.filter_by(version_id=version_id).one().file_id
     file_instance = FileInstance.get(file_id)
-    with open(file_instance.uri,'rb') as pdf_file:
-        try:
-            xml = process_pdf_stream(pdf_file)
-        except GrobidRequestError:
-            abort(500)
-    r =  tei_to_dict(xml)
-    # showing the JSON for debugging
-    metadata = dict(
-        title =  r.get('title'),
-        description = r.get('abstract'),
-        keywords =  [ it['value']  for it in r['keywords']] if 'keywords' in r else None,
-        creators =  [ dict(name=it['name'], affiliation=it['affiliations'][0]['value'])
-        for it in r['authors'] ] if 'authors' in r else None
-    )
-    return jsonify(metadata)
+
+    for plugin in current_processor.iter_processors():
+        if plugin.can_process(filetype):
+            try:
+                with open(file_instance.uri,'rb') as f:
+                    metadata = plugin.process(f)
+                return jsonify(metadata)
+            except Exception:
+                # TODO: handle different types of exceptions
+                current_app.logger.warning(
+                    ('File processor failed for {uri}'.format(uri=file_instance.uri)),
+                    exc_info=True
+                )
+    return jsonify(None)

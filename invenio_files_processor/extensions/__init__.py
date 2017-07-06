@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2017 CERN.
+# Copyright (C) 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -22,17 +22,6 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Invenio module that adds more fun to the platform."""
+"""Implementations of different file processors."""
 
-# TODO: This is an example file. Remove it if your package does not use any
-# extra configuration variables.
-
-FILES_PROCESSOR_DEFAULT_VALUE = 'foobar'
-"""Default value for the application."""
-
-FILES_PROCESSOR_BASE_TEMPLATE = 'invenio_files_processor/base.html'
-"""Default base template for the demo page."""
-
-FILES_PROCESSOR_PREFERENCES = [
-    'pdf_grobid'
-]
+from __future__ import absolute_import, print_function

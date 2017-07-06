@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2017 CERN.
+# Copyright (C) 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -22,12 +22,30 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Version information for Invenio-Files-Processor.
-
-This file is imported by ``invenio_files_processor.__init__``,
-and parsed by ``setup.py``.
-"""
+"""Implementations of different file processors."""
 
 from __future__ import absolute_import, print_function
+from invenio_grobid.api import process_pdf_stream
+from invenio_grobid.mapping import tei_to_dict
+from invenio_grobid.errors import GrobidRequestError
 
-__version__ = '0.1.0.dev20170706'
+def can_process(filetype):
+    return filetype == 'pdf'
+
+def process(pdf_file):
+    try:
+        xml = process_pdf_stream(pdf_file)
+    except GrobidRequestError:
+        # Question: what is our convention to handle exception?
+        # It may be not a good practice to just abort with a code
+        abort(500)
+    r =  tei_to_dict(xml)
+    # showing the JSON for debugging
+    metadata = dict(
+        title =  r.get('title'),
+        description = r.get('abstract'),
+        keywords =  [ it['value']  for it in r['keywords']] if 'keywords' in r else None,
+        creators =  [ dict(name=it['name'], affiliation=it['affiliations'][0]['value'])
+        for it in r['authors'] ] if 'authors' in r else None
+    )
+    return metadata
