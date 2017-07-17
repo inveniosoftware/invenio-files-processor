@@ -32,3 +32,6 @@ FILES_PROCESSOR_DEFAULT_VALUE = 'foobar'
 
 FILES_PROCESSOR_BASE_TEMPLATE = 'invenio_files_processor/base.html'
 """Default base template for the demo page."""
+
+FILES_PROCESSOR_PERMISSION_FACTORY = 'invenio_files_rest.permissions.permission_factory'
+"""Permission factory to control the files access from the files-processor interface."""

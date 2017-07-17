@@ -32,6 +32,7 @@ from io import open
 from flask import Blueprint, request, jsonify, current_app
 from invenio_db import db
 from invenio_files_rest.models import ObjectVersion
+from invenio_files_rest.views import ObjectResource
 from .proxies import current_processor
 
 blueprint = Blueprint(
@@ -47,6 +48,9 @@ def extract_pdf_metadata(processor_name=None, version_id=None):
 
     processor = current_processor.get_processor(processor_name)
     object_version = ObjectVersion.query.filter_by(version_id=version_id).one()
+
+    # this function will check for  'object-read' permission
+    ObjectResource.check_object_permission(object_version)
 
     if processor.can_process(object_version):
         try:

@@ -31,3 +31,4 @@ from werkzeug.local import LocalProxy
 
 current_processor = LocalProxy(
     lambda: current_app.extensions['invenio-files-processor'])
+"""Helper proxy to access the processor state."""

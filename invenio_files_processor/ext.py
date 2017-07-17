@@ -61,6 +61,13 @@ class _InvenioFilesProcessorState(object):
         self.entry_point_group = entry_point_group
         self.processors = {}
 
+    @cached_property
+    def permission_factory(self):
+        """Load default permission factory for Buckets collections."""
+        return load_or_import_from_config(
+            'FILES_PROCESSOR_PERMISSION_FACTORY', app=self.app
+        )
+
     def register_processor(self, name, processor):
         """Register a processor in the system."""
         if name in self.processors:
