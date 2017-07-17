@@ -31,7 +31,7 @@ from __future__ import absolute_import, print_function
 from io import open
 from flask import Blueprint, request, jsonify, current_app
 from invenio_db import db
-from invenio_files_rest.models import ObjectVersion, FileInstance
+from invenio_files_rest.models import ObjectVersion
 from .proxies import current_processor
 
 blueprint = Blueprint(
@@ -42,21 +42,22 @@ blueprint = Blueprint(
     static_folder='static',
 )
 
-@blueprint.route("/<filetype>/<version_id>", methods=['POST'])
-def extract_pdf_metadata(filetype=None, version_id=None):
-    file_id = ObjectVersion.query.filter_by(version_id=version_id).one().file_id
-    file_instance = FileInstance.get(file_id)
+@blueprint.route("/<processor_name>/<version_id>", methods=['POST'])
+def extract_pdf_metadata(processor_name=None, version_id=None):
 
-    for plugin in current_processor.iter_processors():
-        if plugin.can_process(filetype):
-            try:
-                with open(file_instance.uri,'rb') as f:
-                    metadata = plugin.process(f)
-                return jsonify(metadata)
-            except Exception:
-                # TODO: handle different types of exceptions
-                current_app.logger.warning(
-                    ('File processor failed for {uri}'.format(uri=file_instance.uri)),
-                    exc_info=True
-                )
-    return jsonify(None)
+    processor = current_processor.get_processor(processor_name)
+    object_version = ObjectVersion.query.filter_by(version_id=version_id).one()
+
+    if processor.can_process(object_version):
+        try:
+            metadata = processor.process(object_version)
+            return jsonify(metadata)
+        except Exception:
+            current_app.logger.warning(
+                ('The processor {} fails when processing the file {}.'.format(processor_name, version_id)),
+                exc_info=True
+            )
+    else:
+        current_app.logger.warning(
+            ('The processor {} cannot process the file {}.'.format(processor_name, version_id)), exc_info=True
+        )

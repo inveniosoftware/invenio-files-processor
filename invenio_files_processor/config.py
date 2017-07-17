@@ -32,7 +32,3 @@ FILES_PROCESSOR_DEFAULT_VALUE = 'foobar'
 
 FILES_PROCESSOR_BASE_TEMPLATE = 'invenio_files_processor/base.html'
 """Default base template for the demo page."""
-
-FILES_PROCESSOR_PREFERENCES = [
-    'pdf_grobid'
-]

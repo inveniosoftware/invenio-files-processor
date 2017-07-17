@@ -60,14 +60,6 @@ class _InvenioFilesProcessorState(object):
         self.app = app
         self.entry_point_group = entry_point_group
         self.processors = {}
-        self._processor_extensions = set()
-
-    @cached_property
-    def processor_extensions(self):
-        if self.entry_point_group is not None:
-            self.load_entry_point_group(self.entry_point_group)
-            self.entry_point_group = None
-        return self._processor_extensions
 
     def register_processor(self, name, processor):
         """Register a processor in the system."""
@@ -75,26 +67,18 @@ class _InvenioFilesProcessorState(object):
             assert name not in self.processors, \
                 "File processor with same name already registered"
         self.processors[name] = processor
-        if hasattr(processor, 'processor_extensions'):
-            self._processor_extensions |= set(
-                processor.processor_extensions)
 
     def load_entry_point_group(self, entry_point_group):
         """Load processors from an entry point group."""
         for ep in pkg_resources.iter_entry_points(group=entry_point_group):
             self.register_processor(ep.name, ep.load())
 
-    def iter_processors(self, processors=None):
+    def get_processor(self, processor_name=None):
         """Get processors."""
         if self.entry_point_group is not None:
             self.load_entry_point_group(self.entry_point_group)
             self.entry_point_group = None
-
-        processors = processors or self.app.config.get('FILES_PROCESSOR_PREFERENCES', [])
-
-        for item in processors:
-            if item in self.processors:
-                yield self.processors[item]
+        return  self.processors[processor_name]
 
 class InvenioFilesProcessor(object):
     """Invenio-Files-Processor extension."""
