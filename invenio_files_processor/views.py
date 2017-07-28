@@ -29,7 +29,7 @@
 
 from __future__ import absolute_import, print_function
 from io import open
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify, current_app, abort
 from invenio_db import db
 from invenio_files_rest.models import ObjectVersion
 from invenio_files_rest.views import ObjectResource
@@ -42,6 +42,7 @@ blueprint = Blueprint(
     template_folder='templates',
     static_folder='static',
 )
+
 
 @blueprint.route("/<processor_name>/<version_id>", methods=['POST'])
 def extract_pdf_metadata(processor_name=None, version_id=None):
@@ -58,10 +59,14 @@ def extract_pdf_metadata(processor_name=None, version_id=None):
             return jsonify(metadata)
         except Exception:
             current_app.logger.warning(
-                ('The processor {} fails when processing the file {}.'.format(processor_name, version_id)),
+                ('The processor {} fails when processing the file {}.'.format(
+                    processor_name, version_id)),
                 exc_info=True
             )
+            abort(500)
     else:
         current_app.logger.warning(
-            ('The processor {} cannot process the file {}.'.format(processor_name, version_id)), exc_info=True
+            ('The processor {} cannot process the file {}.'.format(
+                processor_name, version_id)), exc_info=True
         )
+        abort(500)
