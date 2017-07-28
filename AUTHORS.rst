@@ -24,6 +24,7 @@
 Authors
 =======
 
-Invenio module that adds more fun to the platform.
+Invenio module for file processing tasks.
 
-- CERN <info@inveniosoftware.org>
+- Krzysztof Nowak <k.nowak@cern.ch>
+- Xiao Meng <xiaom.cs@gmail.com>
