@@ -26,16 +26,15 @@
 
 from __future__ import absolute_import, print_function
 
-
 import pkg_resources
 import six
 from flask import current_app
 from pkg_resources import DistributionNotFound, get_distribution
 from werkzeug.utils import cached_property, import_string
 
-
 from . import config
 from .views import blueprint
+
 
 def obj_or_import_string(value, default=None):
     """Import string or return object."""
@@ -44,6 +43,7 @@ def obj_or_import_string(value, default=None):
     elif value:
         return value
     return default
+
 
 def load_or_import_from_config(key, app=None, default=None):
     """Load or import value from config."""
@@ -85,7 +85,8 @@ class _InvenioFilesProcessorState(object):
         if self.entry_point_group is not None:
             self.load_entry_point_group(self.entry_point_group)
             self.entry_point_group = None
-        return  self.processors[processor_name]
+        return self.processors[processor_name]
+
 
 class InvenioFilesProcessor(object):
     """Invenio-Files-Processor extension."""
@@ -95,11 +96,14 @@ class InvenioFilesProcessor(object):
         if app:
             self.init_app(app)
 
-    def init_app(self, app, entry_point_group='invenio_files_processor.processors'):
+    def init_app(self, app,
+                 entry_point_group='invenio_files_processor.processors'):
         """Flask application initialization."""
         self.init_config(app)
         app.register_blueprint(blueprint)
-        state = _InvenioFilesProcessorState(app, entry_point_group=entry_point_group)
+        state = _InvenioFilesProcessorState(
+            app,
+            entry_point_group=entry_point_group)
         app.extensions['invenio-files-processor'] = state
         return state
 
