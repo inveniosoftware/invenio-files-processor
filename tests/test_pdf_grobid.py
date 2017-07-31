@@ -94,9 +94,9 @@ def test_can_process(pdf_obj, fits_obj):
 
 def test_process(mocker, pdf_obj, tei_xml):
     """Test the processing function."""
-    mocker.patch('invenio_grobid.api.process_pdf_stream',
-                 return_value=tei_xml,
-                 auto_spec=True)
+    mocker.patch(
+        'invenio_files_processor.processors.pdf_grobid.process_pdf_stream',
+        return_value=tei_xml, auto_spec=True)
 
     metadata = pdf_grobid.process(pdf_obj)
     assert metadata['title'] == "The Need to Fairly Confront Spin-1 for " \

@@ -39,7 +39,6 @@ from invenio_access import InvenioAccess
 from invenio_access.models import ActionUsers
 from invenio_accounts import InvenioAccounts
 from invenio_accounts.testutils import create_test_user
-from invenio_accounts.views import blueprint as accounts_blueprint
 from invenio_db import db as db_
 from invenio_db import InvenioDB
 from invenio_files_rest import InvenioFilesREST
@@ -49,7 +48,6 @@ from sqlalchemy_utils.functions import create_database, database_exists, \
     drop_database
 
 from invenio_files_processor import InvenioFilesProcessor
-from invenio_files_processor.views import blueprint
 
 
 @pytest.yield_fixture()

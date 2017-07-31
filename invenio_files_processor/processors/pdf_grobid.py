@@ -30,6 +30,7 @@ from io import open
 
 from flask import abort, current_app
 from invenio_files_rest.models import FileInstance
+from invenio_grobid.api import process_pdf_stream
 from invenio_grobid.errors import GrobidRequestError
 from invenio_grobid.mapping import tei_to_dict
 
@@ -42,7 +43,6 @@ def can_process(object_version):
 
 def process(object_version):
     """Process the file with Grobid."""
-    from invenio_grobid.api import process_pdf_stream
     file_instance = FileInstance.get(object_version.file_id)
     xml = None
     with open(file_instance.uri, 'rb') as pdf_file:
