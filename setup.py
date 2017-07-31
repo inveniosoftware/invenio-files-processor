@@ -63,7 +63,7 @@ setup_requires = [
 install_requires = [
     'invenio-files-rest>=1.0.0a17',
     'invenio-access>=1.0.0a12',
-    'invenio-grobid>=0.1.1.dev20151019'
+    'invenio-grobid>=0.2.0'
 ]
 
 packages = find_packages()
