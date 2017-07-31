@@ -26,28 +26,28 @@
 
 from __future__ import absolute_import, print_function
 
-from io import BytesIO
 import os
 import shutil
 import tempfile
+from io import BytesIO
+
 import pytest
 from flask import Flask
 from flask_babelex import Babel
 from flask_menu import Menu
-
-from sqlalchemy_utils.functions import create_database, database_exists, \
-    drop_database
-
 from invenio_access import InvenioAccess
 from invenio_access.models import ActionUsers
 from invenio_accounts import InvenioAccounts
 from invenio_accounts.testutils import create_test_user
 from invenio_accounts.views import blueprint as accounts_blueprint
-from invenio_db import InvenioDB
 from invenio_db import db as db_
+from invenio_db import InvenioDB
 from invenio_files_rest import InvenioFilesREST
+from invenio_files_rest.models import Bucket, Location, ObjectVersion
 from invenio_files_rest.permissions import object_read_all
-from invenio_files_rest.models import Location, Bucket, ObjectVersion
+from sqlalchemy_utils.functions import create_database, database_exists, \
+    drop_database
+
 from invenio_files_processor import InvenioFilesProcessor
 from invenio_files_processor.views import blueprint
 
@@ -78,7 +78,7 @@ def app():
     InvenioAccounts(app_)
     InvenioAccess(app_)
     InvenioFilesREST(app_)
-    processor = InvenioFilesProcessor(app_)
+    InvenioFilesProcessor(app_)
     with app_.app_context():
         yield app_
     shutil.rmtree(instance_path)
@@ -131,6 +131,7 @@ def bucket(db, dummy_location):
 
 @pytest.fixture()
 def pdf_obj(db, bucket):
+    """Mock of a PDF document."""
     content = b'pdf content'
     obj = ObjectVersion.create(bucket, 'file.pdf', stream=BytesIO(content),
                                size=len(content))
@@ -140,6 +141,7 @@ def pdf_obj(db, bucket):
 
 @pytest.fixture()
 def fits_obj(db, bucket):
+    """Mock of a FITS image."""
     content = b'fits content'
     obj = ObjectVersion.create(bucket, 'file.fits', stream=BytesIO(content),
                                size=len(content))

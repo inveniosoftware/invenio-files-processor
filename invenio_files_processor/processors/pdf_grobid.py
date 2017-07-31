@@ -25,7 +25,9 @@
 """Implementations of different file processors."""
 
 from __future__ import absolute_import, print_function
+
 from io import open
+
 from flask import abort, current_app
 from invenio_files_rest.models import FileInstance
 from invenio_grobid.errors import GrobidRequestError
@@ -33,11 +35,13 @@ from invenio_grobid.mapping import tei_to_dict
 
 
 def can_process(object_version):
+    """Check if given file can be processed by Grobid."""
     # For now, we only check the filetype
     return object_version.mimetype == 'application/pdf'
 
 
 def process(object_version):
+    """Process the file with Grobid."""
     from invenio_grobid.api import process_pdf_stream
     file_instance = FileInstance.get(object_version.file_id)
     xml = None

@@ -22,7 +22,7 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Invenio module that adds more fun to the platform."""
+"""Invenio module for file processing tasks."""
 
 import os
 
@@ -32,15 +32,17 @@ readme = open('README.rst').read()
 history = open('CHANGES.rst').read()
 
 tests_require = [
+    'Flask-Menu>=0.4.0',
     'check-manifest>=0.25',
     'coverage>=4.0',
-    'isort>=4.2.2',
+    'invenio-db[versioning]>=1.0.0b3',
+    'isort>=4.2.15',
     'pydocstyle>=1.0.0',
+    'pytest>=2.8.0',
     'pytest-cache>=1.0',
     'pytest-cov>=1.8.0',
     'pytest-mock>=1.6.0',
     'pytest-pep8>=1.0.6',
-    'pytest>=2.8.0',
 ]
 
 extras_require = {
@@ -55,12 +57,13 @@ for reqs in extras_require.values():
     extras_require['all'].extend(reqs)
 
 setup_requires = [
-    'Babel>=1.3',
-    'pytest-runner>=2.6.2',
+    'pytest-runner>=2.7',
 ]
 
 install_requires = [
-    'Flask-BabelEx>=0.9.2',
+    'invenio-files-rest>=1.0.0a17',
+    'invenio-access>=1.0.0a12',
+    'invenio-grobid>=0.1.1.dev20151019'
 ]
 
 packages = find_packages()
@@ -77,7 +80,7 @@ setup(
     version=version,
     description=__doc__,
     long_description=readme + '\n\n' + history,
-    keywords='invenio TODO',
+    keywords='invenio files processor REST grobid',
     license='GPLv2',
     author='CERN',
     author_email='info@inveniosoftware.org',
@@ -88,7 +91,8 @@ setup(
     platforms='any',
     entry_points={
         'invenio_base.apps': [
-            'invenio_files_processor = invenio_files_processor:InvenioFilesProcessor',
+            'invenio_files_processor = '
+            'invenio_files_processor:InvenioFilesProcessor',
         ],
         'invenio_i18n.translations': [
             'messages = invenio_files_processor',
@@ -96,17 +100,9 @@ setup(
         'invenio_files_processor.processors': [
             'pdf_grobid = invenio_files_processor.processors.pdf_grobid'
         ]
-        # TODO: Edit these entry points to fit your needs.
-        # 'invenio_access.actions': [],
-        # 'invenio_admin.actions': [],
-        # 'invenio_assets.bundles': [],
         # 'invenio_base.api_apps': [],
         # 'invenio_base.api_blueprints': [],
         # 'invenio_base.blueprints': [],
-        # 'invenio_celery.tasks': [],
-        # 'invenio_db.models': [],
-        # 'invenio_pidstore.minters': [],
-        # 'invenio_records.jsonresolver': [],
     },
     extras_require=extras_require,
     install_requires=install_requires,
@@ -124,6 +120,6 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
-        'Development Status :: 1 - Planning',
+        'Development Status :: 3 - Alpha',
     ],
 )
