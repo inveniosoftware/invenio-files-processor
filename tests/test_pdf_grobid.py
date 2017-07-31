@@ -44,14 +44,6 @@ class MockEntryPoint(EntryPoint):
         return importlib.import_module(self.module_name)
 
 
-@pytest.fixture()
-def tei_xml():
-    """Provide pdf fixture."""
-    with open(os.path.join(os.path.dirname(__file__),
-                           'fixtures', 'article.xml'), encoding='utf-8') as f:
-        yield f.read()
-
-
 def login_user(client, user):
     """Log in a specified user."""
     with client.session_transaction() as sess:

@@ -29,7 +29,7 @@ from __future__ import absolute_import, print_function
 import os
 import shutil
 import tempfile
-from io import BytesIO
+from io import BytesIO, open
 
 import pytest
 from flask import Flask
@@ -57,7 +57,6 @@ def instance_path():
     yield path
 
 
-@pytest.fixture()
 @pytest.yield_fixture(scope='session', autouse=True)
 def app():
     """Flask application fixture."""
@@ -135,6 +134,14 @@ def pdf_obj(db, bucket):
                                size=len(content))
     db.session.commit()
     return obj
+
+
+@pytest.fixture()
+def tei_xml():
+    """Provide pdf fixture."""
+    with open(os.path.join(os.path.dirname(__file__),
+                           'fixtures', 'article.xml'), encoding='utf-8') as f:
+        return f.read()
 
 
 @pytest.fixture()
