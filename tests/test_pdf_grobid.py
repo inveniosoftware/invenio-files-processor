@@ -29,11 +29,10 @@ from __future__ import absolute_import, print_function
 import importlib
 import os
 from io import open
-from pkg_resources import EntryPoint
-
-from flask import url_for
 
 import pytest
+from pkg_resources import EntryPoint
+
 from invenio_files_processor.processors import pdf_grobid
 
 
@@ -61,6 +60,7 @@ def login_user(client, user):
 
 
 def test_permission(mocker, client, users, pdf_obj):
+    """Test the file permission."""
     mocker.patch('pkg_resources.iter_entry_points',
                  return_value=[
                      MockEntryPoint(
@@ -75,31 +75,54 @@ def test_permission(mocker, client, users, pdf_obj):
 
     login_user(client, users['read'])
     resp = client.post(
-        '/fileprocessor/pdf_grobid/{}'.format(pdf_obj.version_id))
+        '/filesprocessor/pdf_grobid/{}'.format(pdf_obj.version_id))
     assert resp.status_code == 200
 
     login_user(client, users['non-read'])
     resp = client.post(
-        '/fileprocessor/pdf_grobid/{}'.format(pdf_obj.version_id))
+        '/filesprocessor/pdf_grobid/{}'.format(pdf_obj.version_id))
     # see invenio_files_rest.views.check_permission for the description of
     # error codes (401, 403 and 404)
     assert resp.status_code == 404
 
 
 def test_can_process(pdf_obj, fits_obj):
+    """Test the can_process function."""
     assert pdf_grobid.can_process(pdf_obj)
     assert not pdf_grobid.can_process(fits_obj)
 
 
 def test_process(mocker, pdf_obj, tei_xml):
+    """Test the processing function."""
     mocker.patch('invenio_grobid.api.process_pdf_stream',
                  return_value=tei_xml,
                  auto_spec=True)
 
     metadata = pdf_grobid.process(pdf_obj)
-    assert metadata['title'] == """The Need to Fairly Confront Spin-1 for \
-the New Higgs-like Particle"""
-    assert metadata['description'] == """Spin-1 was ruled out early in LHC reports of a new particle with mass near 125 GeV. Actually the spin-1 possibility was dismissed on false premises, and remains open. Model-independent classification based on Lorentz invariance permits nearly two dozen independent amplitudes for spin-1 to two vector particles, of which two remain with on-shell photons. The Landau-Yang theorems are inadequate to eliminate spin-1. Theoretical prejudice to close the gaps is unreliable, and a fair consideration based on experiment is needed. A spin-1 field can produce the resonance structure observed in invariant mass distributions, and also produce the same angular distribution of photons and ZZ decays as spin-0. However spin-0 cannot produce the variety of distributions made by spin-1. The Higgs-like pattern of decay also cannot rule out spin-1 without more analysis. Upcoming data will add information, which should be analyzed giving spin-1 full and unbiased consideration that has not appeared before."""
+    assert metadata['title'] == "The Need to Fairly Confront Spin-1 for " \
+        "the New Higgs-like Particle"
+    assert metadata['description'] == (
+        "Spin-1 was ruled out early in LHC "
+        "reports of a new particle with mass near 125 GeV. Actually the spin-1"
+        " possibility was dismissed on false premises, and remains open. "
+        "Model-independent classification based on Lorentz invariance permits "
+        "nearly two dozen independent amplitudes for spin-1 to two vector "
+        "particles, of which two remain with on-shell photons. The Landau-Yang"
+        " theorems are inadequate to eliminate spin-1. Theoretical prejudice "
+        "to close the gaps is unreliable, and a fair consideration based on "
+        "experiment is needed. A spin-1 field can produce the resonance "
+        "structure observed in invariant mass distributions, and also produce "
+        "the same angular distribution of photons and ZZ decays as spin-0. "
+        "However spin-0 cannot produce the variety of distributions made by "
+        "spin-1. The Higgs-like pattern of decay also cannot rule out spin-1 "
+        "without more analysis. Upcoming data will add information, which "
+        "should be analyzed giving spin-1 full and unbiased consideration "
+        "that has not appeared before."
+    )
     assert metadata['keywords'] is None
     assert metadata['creators'] == [
-        {'affiliation': 'University of Kansas', 'name': 'John P. Ralston'}]
+        {
+            'affiliation': 'University of Kansas',
+            'name': 'John P. Ralston'
+        }
+    ]

@@ -22,16 +22,7 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Invenio module that adds more fun to the platform."""
-
-# TODO: This is an example file. Remove it if your package does not use any
-# extra configuration variables.
-
-FILES_PROCESSOR_DEFAULT_VALUE = 'foobar'
-"""Default value for the application."""
-
-FILES_PROCESSOR_BASE_TEMPLATE = 'invenio_files_processor/base.html'
-"""Default base template for the demo page."""
+"""InvenioFilesProcessor configuration."""
 
 FILES_PROCESSOR_PERMISSION_FACTORY = \
     'invenio_files_rest.permissions.permission_factory'

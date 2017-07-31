@@ -53,6 +53,8 @@ before_install:
   - "requirements-builder -e all --level=dev --req requirements-devel.txt setup.py > .travis-devel-requirements.txt"
 
 install:
+    # TODO: Release invenio-grobid on PyPI
+  - "travis_retry pip install -e git+git://github.com/inspirehep/invenio-grobid.git@e28178144aaf060fa39a4ae99b352fd4384e7931#egg=invenio-grobid"
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
   - "travis_retry pip install -e .[all]"
 
