@@ -22,7 +22,7 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Proxy for current processor"""
+"""Proxy for current files processor."""
 
 from __future__ import absolute_import, print_function
 

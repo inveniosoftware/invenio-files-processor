@@ -22,30 +22,28 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Invenio module that adds more fun to the platform."""
-
-# TODO: This is an example file. Remove it if you do not need it, including
-# the templates and static folders as well as the test case.
+"""Invenio module for file processing tasks."""
 
 from __future__ import absolute_import, print_function
-from io import open
-from flask import Blueprint, request, jsonify, current_app
-from invenio_db import db
+
+from flask import Blueprint, abort, current_app, jsonify
 from invenio_files_rest.models import ObjectVersion
 from invenio_files_rest.views import ObjectResource
+
 from .proxies import current_processor
 
 blueprint = Blueprint(
     'invenio_files_processor',
     __name__,
-    url_prefix='/fileprocessor',
+    url_prefix='/filesprocessor',
     template_folder='templates',
     static_folder='static',
 )
 
+
 @blueprint.route("/<processor_name>/<version_id>", methods=['POST'])
 def extract_pdf_metadata(processor_name=None, version_id=None):
-
+    """Main file processing endpoint."""
     processor = current_processor.get_processor(processor_name)
     object_version = ObjectVersion.query.filter_by(version_id=version_id).one()
 
@@ -58,10 +56,14 @@ def extract_pdf_metadata(processor_name=None, version_id=None):
             return jsonify(metadata)
         except Exception:
             current_app.logger.warning(
-                ('The processor {} fails when processing the file {}.'.format(processor_name, version_id)),
+                ('The processor {} fails when processing the file {}.'.format(
+                    processor_name, version_id)),
                 exc_info=True
             )
+            abort(500)
     else:
         current_app.logger.warning(
-            ('The processor {} cannot process the file {}.'.format(processor_name, version_id)), exc_info=True
+            ('The processor {} cannot process the file {}.'.format(
+                processor_name, version_id)), exc_info=True
         )
+        abort(500)

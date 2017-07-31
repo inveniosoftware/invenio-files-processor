@@ -48,12 +48,3 @@ def test_init():
     assert 'invenio-files-processor' not in app.extensions
     ext.init_app(app)
     assert 'invenio-files-processor' in app.extensions
-
-
-def test_view(app):
-    """Test view."""
-    InvenioFilesProcessor(app)
-    with app.test_client() as client:
-        res = client.get("/")
-        assert res.status_code == 200
-        assert 'Welcome to Invenio-Files-Processor' in str(res.data)
