@@ -39,9 +39,6 @@ recursive-include docs *.txt
 recursive-include docs Makefile
 recursive-include examples *.py
 recursive-include examples *.sh
-recursive-include invenio_files_processor *.html
 recursive-include tests *.py
 recursive-include tests *.xml
-
-# added by check_manifest.py
-recursive-include invenio_files_processor *.html
+include MAINTAINERS
