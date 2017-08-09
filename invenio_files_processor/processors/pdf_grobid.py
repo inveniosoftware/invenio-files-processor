@@ -62,8 +62,10 @@ def process(object_version):
         description=r.get('abstract'),
         keywords=[it['value']
                   for it in r['keywords']] if 'keywords' in r else None,
-        creators=[dict(name=it['name'],
-                       affiliation=it['affiliations'][0]['value'])
-                  for it in r['authors']] if 'authors' in r else None
+        creators=[dict(
+            name=it['name'],
+            affiliation=it['affiliations'][0]['value']
+            if len(it['affiliations']) else None
+        ) for it in r['authors']] if 'authors' in r else None
     )
     return metadata

@@ -116,5 +116,9 @@ def test_process(mocker, pdf_obj, tei_xml):
         {
             'affiliation': 'University of Kansas',
             'name': 'John P. Ralston'
+        },
+        {
+            'affiliation': None,
+            'name': 'AUTHOR2_FORNAME AUTHOR2_SURNAME'
         }
     ]

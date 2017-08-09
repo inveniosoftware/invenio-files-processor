@@ -32,6 +32,12 @@
                                 </address>
                             </affiliation>
                         </author>
+                        <author>
+                            <persName>
+                                <forename type="first">AUTHOR2_FORNAME</forename>
+                                <surname>AUTHOR2_SURNAME</surname>
+                            </persName>
+                        </author>
                         <title level="a" type="main">The Need to Fairly Confront Spin-1 for the New Higgs-like Particle</title>
                     </analytic>
                     <monogr>
