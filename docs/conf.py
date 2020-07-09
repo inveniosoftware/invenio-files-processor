@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2019 CERN.
+# Copyright (C) 2020 CERN.
 #
 # Invenio-Files-Processor is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -118,7 +118,7 @@ todo_include_todos = False
 html_theme = 'alabaster'
 
 html_theme_options = {
-    'description': 'Invenio module for files' processing and or transforming.',
+    'description': 'Invenio module for files\' processing and or transforming.',
     'github_user': 'inveniosoftware',
     'github_repo': 'invenio-files-processor',
     'github_button': False,
@@ -298,7 +298,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'invenio-files-processor', u'Invenio-Files-Processor Documentation',
-     author, 'invenio-files-processor', 'Invenio module for files' processing and or transforming.',
+     author, 'invenio-files-processor', 'Invenio module for files\' processing and or transforming.',
      'Miscellaneous'),
 ]
 

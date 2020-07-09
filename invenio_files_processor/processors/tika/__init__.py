@@ -6,10 +6,4 @@
 # modify it under the terms of the MIT License; see LICENSE file for more
 # details.
 
-"""Version information for Invenio-Files-Processor.
-
-This file is imported by ``invenio_files_processor.__init__``,
-and parsed by ``setup.py``.
-"""
-
-__version__ = '1.0.0.dev20190000'
+"""Tika file processors."""

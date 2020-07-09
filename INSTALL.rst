@@ -5,5 +5,11 @@
     and/or modify it under the terms of the MIT License; see LICENSE file for
     more details.
 
+Installation
+============
 
-.. include:: ../INSTALL.rst
+Invenio-Files-Processor is on PyPI so all you need is:
+
+.. code-block:: console
+
+   $ pip install invenio-files-processor
