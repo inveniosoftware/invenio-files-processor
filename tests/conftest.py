@@ -18,9 +18,9 @@ import pytest
 from invenio_app.factory import create_app as create_invenio_app
 from invenio_files_rest.models import ObjectVersion
 from pkg_resources import EntryPoint
-from tests.mock_module.processors import DummyProcessor
 
 from invenio_files_processor.proxies import current_processors
+from tests.mock_module.processors import DummyProcessor
 
 
 @pytest.fixture(scope='module')

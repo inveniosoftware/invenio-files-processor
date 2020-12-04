@@ -11,7 +11,6 @@
 import pytest
 from flask import Flask
 from mock import patch
-from tests.mock_module.processors import DummyProcessor
 
 from invenio_files_processor import InvenioFilesProcessor
 from invenio_files_processor.errors import DuplicatedProcessor, \
@@ -19,6 +18,7 @@ from invenio_files_processor.errors import DuplicatedProcessor, \
 from invenio_files_processor.processors.processor import FilesProcessor
 from invenio_files_processor.processors.tika.unpack import UnpackProcessor
 from invenio_files_processor.proxies import current_processors
+from tests.mock_module.processors import DummyProcessor
 
 
 def test_version():

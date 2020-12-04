@@ -7,10 +7,10 @@
 # details.
 
 """Test file signals."""
-from tests.mock_module.processors import DummyProcessor
 
 from invenio_files_processor.proxies import current_processors
 from invenio_files_processor.signals import file_processed
+from tests.mock_module.processors import DummyProcessor
 
 
 def test_signals(dummy_app, object_version):

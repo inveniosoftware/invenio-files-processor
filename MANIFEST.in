@@ -34,6 +34,7 @@ recursive-include examples *.pdf
 recursive-include examples *.py
 recursive-include examples *.sh
 recursive-include examples *.txt
+recursive-include .github/workflows *.yml
 recursive-include invenio_files_processor *.py
 recursive-include invenio_files_processor/translations *.po *.pot *.mo
 recursive-include tests *.py

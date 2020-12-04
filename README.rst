@@ -9,8 +9,8 @@
  Invenio-Files-Processor
 =========================
 
-.. image:: https://img.shields.io/travis/inveniosoftware/invenio-files-processor.svg
-        :target: https://travis-ci.org/inveniosoftware/invenio-files-processor
+.. image:: https://github.com/inveniosoftware/invenio-files-processor/workflows/CI/badge.svg
+        :target: https://github.com/inveniosoftware/invenio-files-processor/actions
 
 .. image:: https://img.shields.io/coveralls/inveniosoftware/invenio-files-processor.svg
         :target: https://coveralls.io/r/inveniosoftware/invenio-files-processor

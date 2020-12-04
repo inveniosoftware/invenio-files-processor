@@ -16,8 +16,7 @@ readme = open('README.rst').read()
 history = open('CHANGES.rst').read()
 
 tests_require = [
-    'pytest-pycodestyle>=2.0.0',
-    'pytest-invenio>=1.3.2',
+    'pytest-invenio>=1.4.0',
     'mock>=3.0.5',
     'invenio-db>=1.0.4',
     'invenio-app>=1.2.3'
@@ -25,7 +24,7 @@ tests_require = [
 
 extras_require = {
     'docs': [
-        'Sphinx>=1.5.1',
+        'Sphinx>=3',
     ],
     # tika processor
     'tika': [
@@ -45,6 +44,7 @@ install_requires = [
     'Flask-BabelEx>=0.9.4',
     'blinker>=1.4',
     'invenio-files-rest>=1.0.6',
+    'tika==1.24',
 ]
 
 packages = find_packages()
