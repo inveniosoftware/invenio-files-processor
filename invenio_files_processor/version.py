@@ -12,4 +12,4 @@ This file is imported by ``invenio_files_processor.__init__``,
 and parsed by ``setup.py``.
 """
 
-__version__ = '1.0.0.dev20190000'
+__version__ = '0.1.0'
