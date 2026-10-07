@@ -5,7 +5,7 @@
 Changes
 =======
 
-Version 1.0.0 (released TBD)
+Version 1.0.0 (released 2026-10-07)
 
 - Drop ``pkg_resources``. Processors are loaded through
   ``invenio_base.utils.entry_points``, so the package imports on setuptools 81
