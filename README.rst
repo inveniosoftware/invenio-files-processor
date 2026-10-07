@@ -1,9 +1,6 @@
 ..
-    Copyright (C) 2020 CERN.
-
-    Invenio-Files-Processor is free software; you can redistribute it
-    and/or modify it under the terms of the MIT License; see LICENSE file for
-    more details.
+    SPDX-FileCopyrightText: 2020 CERN.
+    SPDX-License-Identifier: MIT
 
 =========================
  Invenio-Files-Processor
@@ -26,7 +23,22 @@
 
 Invenio module for files' processing and or transforming.
 
-TODO: Please provide feature overview of module
+It gives a bucket's files a place to be run through something that reads or
+rewrites them - extracting text and metadata, converting a format, generating a
+preview - without each module having to arrange that for itself.
+
+- A ``FilesProcessor`` interface: a processor says whether it ``can_process`` an
+  ``ObjectVersion`` and what to do with it, and the module checks the file is
+  readable before handing it over.
+- A registry of processors, reachable through the ``current_processors`` proxy.
+  Processors register themselves through the ``invenio_files_processor`` entry
+  point, or at runtime with ``register_processor``.
+- A ``file_processed`` signal, sent with the processor's id, the file and its
+  result, so other modules can pick the output up - indexing the extracted text,
+  say - without being called by the processor directly.
+- One processor included, ``tika_unpack``, which sends a file to an `Apache Tika
+  <https://tika.apache.org/>`_ server and returns its text and metadata. Point
+  ``FILES_PROCESSOR_TIKA_SERVER_ENDPOINT`` at that server.
 
 Further documentation is available on
 https://invenio-files-processor.readthedocs.io/

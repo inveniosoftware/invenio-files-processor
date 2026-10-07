@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright (C) 2020 CERN.
-#
-# Invenio-Files-Processor is free software; you can redistribute it and/or
-# modify it under the terms of the MIT License; see LICENSE file for more
-# details.
+# SPDX-FileCopyrightText: 2020-2026 CERN.
+# SPDX-License-Identifier: MIT
 
 """Module tests."""
 
@@ -13,8 +8,11 @@ from flask import Flask
 from mock import patch
 
 from invenio_files_processor import InvenioFilesProcessor
-from invenio_files_processor.errors import DuplicatedProcessor, \
-    InvalidProcessor, UnsupportedProcessor
+from invenio_files_processor.errors import (
+    DuplicatedProcessor,
+    InvalidProcessor,
+    UnsupportedProcessor,
+)
 from invenio_files_processor.processors.processor import FilesProcessor
 from invenio_files_processor.processors.tika.unpack import UnpackProcessor
 from invenio_files_processor.proxies import current_processors
@@ -24,33 +22,36 @@ from tests.mock_module.processors import DummyProcessor
 def test_version():
     """Test version import."""
     from invenio_files_processor import __version__
+
     assert __version__
 
 
 def test_init():
     """Test extension initialization."""
-    app = Flask('testapp')
+    app = Flask("testapp")
     ext = InvenioFilesProcessor(app)
-    assert 'invenio-files-processor' in app.extensions
+    assert "invenio-files-processor" in app.extensions
 
-    app = Flask('testapp')
+    app = Flask("testapp")
     ext = InvenioFilesProcessor()
-    assert 'invenio-files-processor' not in app.extensions
+    assert "invenio-files-processor" not in app.extensions
     ext.init_app(app)
-    assert 'invenio-files-processor' in app.extensions
+    assert "invenio-files-processor" in app.extensions
 
 
 def test_load_entry_point_group(processor_entrypoints):
     """Test entry point loading."""
     with patch(
-        'invenio_files_processor.ext.iter_entry_points',
-        return_value=processor_entrypoints('invenio_files_processor')
+        "invenio_files_processor.ext.entry_points",
+        return_value=processor_entrypoints("invenio_files_processor"),
     ):
-        app = Flask('testapp')
+        app = Flask("testapp")
         InvenioFilesProcessor(app)
-        app.app_context().push()
 
-        assert set(current_processors.processors.keys()) == {'dummy'}
+        # a pushed-and-never-popped context leaks into every later test, whose
+        # current_app would then be this bare Flask app rather than the fixture's
+        with app.app_context():
+            assert set(current_processors.processors.keys()) == {"dummy"}
 
 
 def test_process(dummy_app, object_version):
@@ -62,30 +63,30 @@ def test_process(dummy_app, object_version):
             name="Invalid File Case",
             obj="file.pdf",
             exception=FileNotFoundError,
-            can_process=True
+            can_process=True,
         ),
         dict(
             name="Invalid Processor Case",
             obj=object_version,
             exception=InvalidProcessor,
-            can_process=False
+            can_process=False,
         ),
         dict(
             name="Valid Processor Case",
             obj=object_version,
             exception=None,
-            can_process=True
-        )
+            can_process=True,
+        ),
     ]
 
     for case in test_cases:
-        if case['exception'] is None:
-            processor.process(case['obj'], can_process=case['can_process'])
+        if case["exception"] is None:
+            processor.process(case["obj"], can_process=case["can_process"])
 
             continue
 
-        with pytest.raises(case['exception']):
-            processor.process(case['obj'], can_process=case['can_process'])
+        with pytest.raises(case["exception"]):
+            processor.process(case["obj"], can_process=case["can_process"])
 
 
 def test_register_unregister_processor(appctx):
@@ -123,14 +124,14 @@ def test_processors(base_app, object_version):
             name="Unpack Processor",
             processor=UnpackProcessor,
             input=object_version,
-            expected="tika.output.json"
+            expected="tika.output.json",
         ),
     ]
 
     for case in test_cases:
-        print(case['processor'].id)
-        processor = current_processors.get_processor(case['processor'].id)
-        output = processor.process(object_version=case['input'])
+        print(case["processor"].id)
+        processor = current_processors.get_processor(case["processor"].id)
+        output = processor.process(object_version=case["input"])
 
-        assert 'metadata' in output
-        assert 'content' in output
+        assert "metadata" in output
+        assert "content" in output

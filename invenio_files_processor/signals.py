@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright (C) 2020 CERN.
-#
-# Invenio-Files-Processor is free software; you can redistribute it and/or
-# modify it under the terms of the MIT License; see LICENSE file for more
-# details.
+# SPDX-FileCopyrightText: 2020 CERN.
+# SPDX-License-Identifier: MIT
 
 """Signals for Invenio-Files-Processor."""
 
@@ -12,7 +7,7 @@ from blinker import Namespace
 
 _signals = Namespace()
 
-file_processed = _signals.signal('file-processed')
+file_processed = _signals.signal("file-processed")
 """File processed signal.
 
 When implementing the event listener, the result can be retrieved from `data`.

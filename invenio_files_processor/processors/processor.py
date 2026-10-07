@@ -1,12 +1,8 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright (C) 2020 CERN.
-#
-# Invenio-Files-Processor is free software; you can redistribute it and/or
-# modify it under the terms of the MIT License; see LICENSE file for more
-# details.
+# SPDX-FileCopyrightText: 2020 CERN.
+# SPDX-License-Identifier: MIT
 
 """Abstract class file processor."""
+
 import errno
 from abc import ABC, abstractmethod
 from os import strerror
@@ -49,10 +45,7 @@ class FilesProcessor(ABC):
 
         :param obj: ObjectVersion file input
         """
-        is_valid = (
-            isinstance(obj, ObjectVersion)
-            and isinstance(obj.file, FileInstance)
-        )
+        is_valid = isinstance(obj, ObjectVersion) and isinstance(obj.file, FileInstance)
 
         if not is_valid:
             raise FileNotFoundError(errno.ENOENT, strerror(errno.ENOENT))

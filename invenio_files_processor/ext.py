@@ -1,28 +1,18 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright (C) 2020 CERN.
-#
-# Invenio-Files-Processor is free software; you can redistribute it and/or
-# modify it under the terms of the MIT License; see LICENSE file for more
-# details.
+# SPDX-FileCopyrightText: 2020-2026 CERN.
+# SPDX-License-Identifier: MIT
 
 """Invenio module for files' processing and or transforming."""
 
-from pkg_resources import iter_entry_points
+from invenio_base.utils import entry_points
 
 from . import config
 from .errors import DuplicatedProcessor, UnsupportedProcessor
 
 
-class _InvenioFilesProcessorState(object):
+class _InvenioFilesProcessorState:
     """Store registered processors."""
 
-    def __init__(
-        self,
-        app,
-        entry_point_group=None,
-        **kwargs
-    ):
+    def __init__(self, app, entry_point_group=None, **kwargs):
         """Initialize state.
 
         :param app: An instance of :class:`~flask.app.Flask`.
@@ -37,7 +27,7 @@ class _InvenioFilesProcessorState(object):
 
     def _load_entry_point_group(self, entry_point_group):
         """Load processors from an entry point group."""
-        for ep in iter_entry_points(group=entry_point_group):
+        for ep in entry_points(group=entry_point_group):
             self.register_processor(ep.name, ep.load())
 
     def register_processor(self, name, processor):
@@ -60,7 +50,7 @@ class _InvenioFilesProcessorState(object):
             raise UnsupportedProcessor(name)
 
 
-class InvenioFilesProcessor(object):
+class InvenioFilesProcessor:
     """Invenio-Files-Processor extension."""
 
     def __init__(self, app=None):
@@ -68,26 +58,19 @@ class InvenioFilesProcessor(object):
         if app:
             self.init_app(app)
 
-    def init_app(
-        self,
-        app,
-        entry_point_group='invenio_files_processor',
-        **kwargs
-    ):
+    def init_app(self, app, entry_point_group="invenio_files_processor", **kwargs):
         """Flask application initialization."""
         self.init_config(app)
 
         state = _InvenioFilesProcessorState(
-            app,
-            entry_point_group=entry_point_group,
-            **kwargs
+            app, entry_point_group=entry_point_group, **kwargs
         )
-        app.extensions['invenio-files-processor'] = state
+        app.extensions["invenio-files-processor"] = state
 
         return state
 
     def init_config(self, app):
         """Initialize configuration."""
         for k in dir(config):
-            if k.startswith('FILES_PROCESSOR_'):
+            if k.startswith("FILES_PROCESSOR_"):
                 app.config.setdefault(k, getattr(config, k))

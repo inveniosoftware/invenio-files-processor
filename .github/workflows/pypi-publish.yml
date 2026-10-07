@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2020-2026 CERN.
+# SPDX-License-Identifier: MIT
+
+name: Publish
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build-n-publish:
+    uses: inveniosoftware/workflows/.github/workflows/pypi-publish.yml@master
+    secrets: inherit

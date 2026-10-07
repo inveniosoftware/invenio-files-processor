@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright (C) 2020 CERN.
-#
-# Invenio-Files-Processor is free software; you can redistribute it and/or
-# modify it under the terms of the MIT License; see LICENSE file for more
-# details.
+# SPDX-FileCopyrightText: 2020 CERN.
+# SPDX-License-Identifier: MIT
 
 """Processor errors."""
 
@@ -44,6 +39,5 @@ class InvalidProcessor(ProcessorError):
     def __str__(self):
         """Return description."""
         return "Processor {id} can't be applied to file {file}.".format(
-            id=self.processor,
-            file=self.file
+            id=self.processor, file=self.file
         )

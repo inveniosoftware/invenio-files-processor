@@ -1,0 +1,75 @@
+# SPDX-FileCopyrightText: 2020-2026 CERN.
+# SPDX-License-Identifier: MIT
+
+[project]
+name = "invenio-files-processor"
+description = "Invenio module for files' processing and or transforming."
+readme = "README.rst"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+  { name = "CERN", email = "info@inveniosoftware.org" },
+]
+keywords = [
+  "invenio",
+  "files",
+  "processor",
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+]
+dependencies = [
+  "blinker>=1.4",
+  "invenio-base>=2.3.0,<3.0.0",
+  "invenio-files-rest>=6.0.0,<7.0.0",
+]
+dynamic = ["version"]
+
+[project.urls]
+Repository = "https://github.com/inveniosoftware/invenio-files-processor"
+
+[project.optional-dependencies]
+tika = [
+  "tika>=3.1.0,<4.0.0",
+]
+docs = [
+  "sphinx>=3",
+]
+tests = [
+  "mock>=5.0.0",
+  "pytest-invenio>=4.0.0,<5.0.0",
+  "invenio-db>=2.2.0,<3.0.0",
+  "invenio-app>=3.0.0,<4.0.0",
+]
+
+[project.entry-points."invenio_base.apps"]
+invenio_files_processor = "invenio_files_processor:InvenioFilesProcessor"
+
+[project.entry-points."invenio_base.api_apps"]
+invenio_files_processor = "invenio_files_processor:InvenioFilesProcessor"
+
+[project.entry-points."invenio_files_processor"]
+tika_unpack = "invenio_files_processor.processors.tika.unpack:UnpackProcessor"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "invenio_files_processor/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/invenio_files_processor",
+]
+
+[tool.isort]
+profile = "black"
+
+[tool.pydocstyle]
+add_ignore = "D401"
+
+[tool.pytest.ini_options]
+addopts = '--isort --pydocstyle --doctest-glob="*.rst" --doctest-modules --cov=invenio_files_processor --cov-report=term-missing'
+testpaths = "tests invenio_files_processor"
+live_server_scope = "module"
