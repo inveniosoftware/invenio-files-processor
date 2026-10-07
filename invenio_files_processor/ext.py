@@ -12,12 +12,7 @@ from .errors import DuplicatedProcessor, UnsupportedProcessor
 class _InvenioFilesProcessorState:
     """Store registered processors."""
 
-    def __init__(
-        self,
-        app,
-        entry_point_group=None,
-        **kwargs
-    ):
+    def __init__(self, app, entry_point_group=None, **kwargs):
         """Initialize state.
 
         :param app: An instance of :class:`~flask.app.Flask`.
@@ -63,26 +58,19 @@ class InvenioFilesProcessor:
         if app:
             self.init_app(app)
 
-    def init_app(
-        self,
-        app,
-        entry_point_group='invenio_files_processor',
-        **kwargs
-    ):
+    def init_app(self, app, entry_point_group="invenio_files_processor", **kwargs):
         """Flask application initialization."""
         self.init_config(app)
 
         state = _InvenioFilesProcessorState(
-            app,
-            entry_point_group=entry_point_group,
-            **kwargs
+            app, entry_point_group=entry_point_group, **kwargs
         )
-        app.extensions['invenio-files-processor'] = state
+        app.extensions["invenio-files-processor"] = state
 
         return state
 
     def init_config(self, app):
         """Initialize configuration."""
         for k in dir(config):
-            if k.startswith('FILES_PROCESSOR_'):
+            if k.startswith("FILES_PROCESSOR_"):
                 app.config.setdefault(k, getattr(config, k))

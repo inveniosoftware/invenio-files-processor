@@ -7,7 +7,7 @@ from blinker import Namespace
 
 _signals = Namespace()
 
-file_processed = _signals.signal('file-processed')
+file_processed = _signals.signal("file-processed")
 """File processed signal.
 
 When implementing the event listener, the result can be retrieved from `data`.

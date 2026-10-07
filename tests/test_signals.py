@@ -15,9 +15,9 @@ def test_signals(dummy_app, object_version):
     def file_processed_listener(base_app, processor_id, file, data):
         assert processor_id == DummyProcessor.id
         assert object_version == file
-        assert data['content'] == 'dummy'
+        assert data["content"] == "dummy"
 
-        calls.append('file-processed')
+        calls.append("file-processed")
 
     file_processed.connect(file_processed_listener, weak=False)
 
@@ -26,6 +26,6 @@ def test_signals(dummy_app, object_version):
 
         processor.process(object_version=object_version)
 
-        assert calls == ['file-processed']
+        assert calls == ["file-processed"]
     finally:
         file_processed.disconnect(file_processed_listener)

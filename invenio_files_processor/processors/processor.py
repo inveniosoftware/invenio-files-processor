@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 """Abstract class file processor."""
+
 import errno
 from abc import ABC, abstractmethod
 from os import strerror
@@ -44,10 +45,7 @@ class FilesProcessor(ABC):
 
         :param obj: ObjectVersion file input
         """
-        is_valid = (
-            isinstance(obj, ObjectVersion)
-            and isinstance(obj.file, FileInstance)
-        )
+        is_valid = isinstance(obj, ObjectVersion) and isinstance(obj.file, FileInstance)
 
         if not is_valid:
             raise FileNotFoundError(errno.ENOENT, strerror(errno.ENOENT))

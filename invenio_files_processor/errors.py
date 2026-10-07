@@ -39,6 +39,5 @@ class InvalidProcessor(ProcessorError):
     def __str__(self):
         """Return description."""
         return "Processor {id} can't be applied to file {file}.".format(
-            id=self.processor,
-            file=self.file
+            id=self.processor, file=self.file
         )

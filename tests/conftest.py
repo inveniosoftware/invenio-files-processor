@@ -6,6 +6,7 @@
 See https://pytest-invenio.readthedocs.io/ for documentation on which test
 fixtures are available.
 """
+
 import os
 import tempfile
 
@@ -18,7 +19,7 @@ from invenio_files_processor.proxies import current_processors
 from tests.mock_module.processors import DummyProcessor
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def create_app():
     """Create test app."""
     return create_invenio_app
@@ -57,6 +58,7 @@ class MockEntryPoint:
 
 def mock_iter_entry_points_factory(data, mocked_group):
     """Create a mock entry_points function."""
+
     def entrypoints(group, name=None):
         if group == mocked_group:
             for entrypoint in data:
@@ -71,20 +73,17 @@ def mock_iter_entry_points_factory(data, mocked_group):
 @pytest.fixture()
 def processor_entrypoints():
     """Entrypoint fixture."""
-    eps = [MockEntryPoint(DummyProcessor.id, 'invenio_files_processor')]
+    eps = [MockEntryPoint(DummyProcessor.id, "invenio_files_processor")]
 
-    return mock_iter_entry_points_factory(eps, 'invenio_files_processor')
+    return mock_iter_entry_points_factory(eps, "invenio_files_processor")
 
 
 @pytest.fixture()
 def bucket(bucket_from_dir):
     """Create temporary bucket fixture."""
-    content = b'some content'
+    content = b"some content"
     dir_for_files = tempfile.mkdtemp()
-    with open(
-        os.path.join(dir_for_files, 'output_file'),
-        'wb'
-    ) as file_out:
+    with open(os.path.join(dir_for_files, "output_file"), "wb") as file_out:
         file_out.write(content)
 
     # load file to bucket
