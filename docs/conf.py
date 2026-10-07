@@ -8,11 +8,9 @@
 
 """Sphinx configuration."""
 
-from __future__ import print_function
-
-import os
-
 import sphinx.environment
+
+from invenio_files_processor import __version__
 
 # -- General configuration ------------------------------------------------
 
@@ -58,13 +56,7 @@ author = u'CERN'
 #
 # The short X.Y version.
 
-# Get the version string. Cannot be done with import!
-g = {}
-with open(os.path.join(os.path.dirname(__file__), '..',
-                       'invenio_files_processor', 'version.py'),
-          'rt') as fp:
-    exec(fp.read(), g)
-    version = g['__version__']
+version = __version__
 
 # The full version, including alpha/beta/rc tags.
 release = version

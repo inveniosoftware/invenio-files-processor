@@ -9,6 +9,7 @@
 """Invenio module for files' processing and or transforming."""
 
 from .ext import InvenioFilesProcessor
-from .version import __version__
+
+__version__ = '1.0.0'
 
 __all__ = ('__version__', 'InvenioFilesProcessor')
