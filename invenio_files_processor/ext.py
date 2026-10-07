@@ -14,7 +14,7 @@ from . import config
 from .errors import DuplicatedProcessor, UnsupportedProcessor
 
 
-class _InvenioFilesProcessorState(object):
+class _InvenioFilesProcessorState:
     """Store registered processors."""
 
     def __init__(
@@ -60,7 +60,7 @@ class _InvenioFilesProcessorState(object):
             raise UnsupportedProcessor(name)
 
 
-class InvenioFilesProcessor(object):
+class InvenioFilesProcessor:
     """Invenio-Files-Processor extension."""
 
     def __init__(self, app=None):

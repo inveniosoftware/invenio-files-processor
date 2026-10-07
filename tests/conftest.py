@@ -42,7 +42,7 @@ def dummy_app(appctx):
     current_processors.unregister_processor(DummyProcessor.id)
 
 
-class MockEntryPoint(object):
+class MockEntryPoint:
     """Stand-in for an importlib.metadata entry point.
 
     ``importlib.metadata.EntryPoint`` is immutable, so unlike the
